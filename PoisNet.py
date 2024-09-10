@@ -45,7 +45,7 @@ class PoisNet(nn.Module):
         self.nx = nx
         fc1 = Multiply(1,self.nx)
         self.fc1 = fc1
-        fc2 = nn.Linear(self.nx,self.nx)
+        fc2 = nn.Linear(self.nx,1)
         self.fc2 = fc2
     def forward(self,x): # at first place replace forward with exact solution
         return torch.sin(x)
