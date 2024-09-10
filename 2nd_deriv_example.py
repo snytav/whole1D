@@ -21,7 +21,7 @@ dx = 1. / nx
 
 from PoisNet import PoisNet
 
-pn = PoisNet(nx,nx)
+pn = PoisNet(nx)
 
 def f(x, psy, dpsy):
     '''
@@ -78,16 +78,19 @@ def loss_function(W, x):
 
     return loss_sum
 
-W = [npr.randn(1, 10), npr.randn(10, 1)]
+W = [npr.randn(1, nx), npr.randn(nx, 1)]
 lmb = 0.001
 
 y = neural_network(W,x_space[1])
 x = torch.from_numpy(x_space).float()
 yt = torch.matmul(x,pn.fc1.weight.T)
 
+# 1st layer
+y1 = np.dot(x_space[1],W[0])
+
 
 pn.fc1.weight = torch.nn.Parameter(torch.from_numpy(W[0]))
-pn.fc1.bias   = torch.nn.Parameter(torch.zeros(pn.fc1.bias.shape[0]).double())
+#pn.fc1.bias   = torch.nn.Parameter(torch.zeros(pn.fc1.bias.shape[0]).double())
 pn.fc2.weight = torch.nn.Parameter(torch.from_numpy(W[1]))
 pn.fc2.bias   = torch.nn.Parameter(torch.zeros(pn.fc2.bias.shape[0]).double())
 

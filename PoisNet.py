@@ -8,7 +8,7 @@ Original file is located at
 """
 
 #import torch
-nx = 10
+nx = 3
 
 def f(x, psy, dpsy):
     '''
@@ -37,15 +37,15 @@ def psy_trial(xi, net_out):
     return xi + xi**2 * net_out
 
 import torch.nn as nn
+from multiply import Multiply
 import torch
 class PoisNet(nn.Module):
-    def __init__(self,nx,N):
+    def __init__(self,nx):
         super(PoisNet,self).__init__()
         self.nx = nx
-        self.N = N
-        fc1 = nn.Linear(self.nx,self.N)
+        fc1 = Multiply(1,self.nx)
         self.fc1 = fc1
-        fc2 = nn.Linear(self.N,self.nx)
+        fc2 = nn.Linear(self.nx,self.nx)
         self.fc2 = fc2
     def forward(self,x): # at first place replace forward with exact solution
         return torch.sin(x)
@@ -58,24 +58,24 @@ class PoisNet(nn.Module):
         j=jacobian(self.forward,inputs=x)
         return j.diag()
 
-pn= PoisNet(nx,5)
-
-x
-
-net_out = pn.forward(x)
-net_out
-
-j = jacobian(pn.forward,inputs=x)
-df_dx = j.diag()
-df_dx
-
-p = pn.prime(x)
-
-jj = jacobian(pn.prime,inputs=x)
-jj
-
-import torch
-torch.max(torch.abs(torch.cos(x)-df_dx))
+# pn= PoisNet(nx)
+#
+# x
+#
+# net_out = pn.forward(x)
+# net_out
+#
+# j = jacobian(pn.forward,inputs=x)
+# df_dx = j.diag()
+# df_dx
+#
+# p = pn.prime(x)
+#
+# jj = jacobian(pn.prime,inputs=x)
+# jj
+#
+# import torch
+# torch.max(torch.abs(torch.cos(x)-df_dx))
 
 #h = jacobian(pn.ъ,inputs=x)
 
