@@ -12,7 +12,7 @@ class Multiply(nn.Module):
         self.weight = torch.nn.Parameter(torch.rand(self.N,self.M))
 
     def forward(self, x):
-        x = torch.multiply(self.weight,x)
+        x = torch.multiply(x,self.weight)
         return x
 
 

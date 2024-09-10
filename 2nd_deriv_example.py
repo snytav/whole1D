@@ -86,7 +86,7 @@ x = torch.from_numpy(x_space).float()
 yt = torch.matmul(x,pn.fc1.weight.T)
 
 # 1st layer
-y1 = np.dot(x_space[1],W[0])
+
 
 
 pn.fc1.weight = torch.nn.Parameter(torch.from_numpy(W[0]))
@@ -94,10 +94,19 @@ pn.fc1.weight = torch.nn.Parameter(torch.from_numpy(W[0]))
 pn.fc2.weight = torch.nn.Parameter(torch.from_numpy(W[1]))
 pn.fc2.bias   = torch.nn.Parameter(torch.zeros(pn.fc2.bias.shape[0]).double())
 
+y1 = np.dot(x_space[1],W[0])
+y1t = pn.fc1(torch.from_numpy(x_space).float()[1])
 
+s1 = sigmoid(y1)
+s1t = torch.sigmoid(y1t)
+
+y2 = np.dot(s1,W[1])
+y2t = pn.fc2(s1t)
 
 
 yt = pn.forward(torch.ones(1))
+
+
 
 for i in range(50):
     loss_grad =  grad(loss_function)(W, x_space)
