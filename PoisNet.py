@@ -48,7 +48,7 @@ class PoisNet(nn.Module):
         fc2 = nn.Linear(self.nx,1)
         self.fc2 = fc2
     def forward(self,x): # at first place replace forward with exact solution
-        return torch.sin(x)
+        #return torch.sin(x)
                          # to check loss function
         x = self.fc1(x)
         x = torch.sigmoid(x)
