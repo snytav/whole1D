@@ -117,17 +117,17 @@ qq = 0
 for i in range(50):
     loss_grad =  grad(loss_function)(W, x_space)
 
-    W[0] = W[0] - lmb * loss_grad[0]
-    W[1] = W[1] - lmb * loss_grad[1]
+    # W[0] = W[0] - lmb * loss_grad[0]
+    # W[1] = W[1] - lmb * loss_grad[1]
 
 print( loss_function(W, x_space))
 res = [psy_trial(xi, neural_network(W, xi)[0][0]) for xi in x_space]
 
 
-plt.figure()
-plt.plot(x_space, y_space)
-plt.plot(x_space, res)
-plt.show()
+# plt.figure()
+# plt.plot(x_space, y_space)
+# plt.plot(x_space, res)
+# plt.show()
 
 
 
