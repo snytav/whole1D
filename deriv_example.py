@@ -16,7 +16,7 @@ import autograd.numpy.random as npr
 from matplotlib import pyplot as plt
 # %matplotlib inline
 
-nx = 3
+nx = 5
 dx = 1. / nx
 
 W = [npr.randn(1, nx), npr.randn(nx, 1)]
@@ -93,7 +93,7 @@ yt = torch.matmul(x,pn.fc1.weight.T)
 
 pn.fc1.weight = torch.nn.Parameter(torch.from_numpy(W[0]))
 #pn.fc1.bias   = torch.nn.Parameter(torch.zeros(pn.fc1.bias.shape[0]).double())
-pn.fc2.weight = torch.nn.Parameter(torch.from_numpy(W[1]).reshape(1,3))
+pn.fc2.weight = torch.nn.Parameter(torch.from_numpy(W[1]).reshape(1,len(W[1])))
 pn.fc2.bias   = torch.nn.Parameter(torch.zeros(pn.fc2.bias.shape[0]).double())
 
 y1 = np.dot(x_space[1],W[0])
