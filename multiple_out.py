@@ -4,7 +4,7 @@ import torch.nn as nn
 from torch.autograd.functional import jacobian,hessian
 from deriv_example import neural_network_x,neural_network,nx
 from deriv_example import W,x_space,pn,sigmoid
-
+import autograd.numpy as np
 
 x0 =x_space[0]
 
