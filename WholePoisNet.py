@@ -30,6 +30,11 @@ class Multiply(nn.Module):
         self.M = M
         self.weight = torch.nn.Parameter(torch.rand(self.N,self.M))
 
+    def set_weight(self,w):
+        wn = w.repeat(self.M,1)
+        self.weight = nn.Parameter(wn.T)
+        return
+
     def forward(self, x):
 
         x = torch.multiply(self.weight,x).T
@@ -53,7 +58,7 @@ y1_n
 w = torch.from_numpy(W[0])
 w3=torch.cat((w,w,w))
 
-ml.weight = nn.Parameter(w3.T)
+ml.set_weight(w)       #weight = nn.Parameter(w3.T)
 ml.weight
 
 ml.weight,xt
@@ -190,7 +195,7 @@ if __name__ == "__main__":
 
     yn = neural_network(W, x_space[2])[0][0]
     wh = WholePoisNet(nx)
-    wh.fc1.weight = nn.Parameter(w3.T)
+    wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
     wh.fc2.weight = nn.Parameter(w1)
     yt = wh(xt[2])
     d_final = np.abs(yn - yt.detach().numpy())
