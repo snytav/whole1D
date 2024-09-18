@@ -193,7 +193,7 @@ class WholePoisNet(nn.Module):
 
 if __name__ == "__main__":
 
-    yn = neural_network(W, x_space[2])[0][0]
+    yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
     wh = WholePoisNet(nx)
     wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
     wh.fc2.weight = nn.Parameter(w1)

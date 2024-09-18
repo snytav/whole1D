@@ -16,7 +16,7 @@ import autograd.numpy.random as npr
 from matplotlib import pyplot as plt
 # %matplotlib inline
 
-nx = 5
+nx = 3
 dx = 1. / nx
 
 W = [npr.randn(1, nx), npr.randn(nx, 1)]
