@@ -175,6 +175,9 @@ class WholePoisNet(nn.Module):
         x = self.fc2(x)
         return x
 
+    def one_point_forward(self,x):
+        return torch.sum(torch.abs(self.forward(x)))
+
 
 
 
