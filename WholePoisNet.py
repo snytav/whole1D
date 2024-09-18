@@ -99,7 +99,7 @@ w1 = torch.from_numpy(W[1])
 
 y1_t[0,:],w1.T
 
-y2_t_2 = torch.inner(y1_t[0,:],w1.reshape(3))
+#y2_t_2 = torch.inner(y1_t[0,:],w1.reshape(3))
 y2_t_2
 
 y2_t_2
@@ -199,4 +199,5 @@ if __name__ == "__main__":
     wh.fc2.weight = nn.Parameter(w1)
     yt = wh(xt[2])
     d_final = np.abs(yn - yt.detach().numpy())
+    d1 = np.max(d_final)
     qq = 0
