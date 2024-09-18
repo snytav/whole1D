@@ -197,7 +197,8 @@ if __name__ == "__main__":
     wh = WholePoisNet(nx)
     wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
     wh.fc2.weight = nn.Parameter(w1)
-    yt = wh(xt[2])
+    yt = wh(xt)
+    yn = yn.reshape((yt.shape[0],yt.shape[1]))
     d_final = np.abs(yn - yt.detach().numpy())
     d1 = np.max(d_final)
     qq = 0
