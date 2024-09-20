@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.autograd.functional import jacobian,hessian
-from deriv_example import neural_network_x,neural_network,nx
+from deriv_example import neural_network_x,neural_network,nx,psy_trial
 from deriv_example import W,x_space,pn,sigmoid
 import autograd.numpy as np
 from WholePoisNet import WholePoisNet,w,w1,xt
@@ -15,10 +15,15 @@ if __name__ == "__main__":
     wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
     wh.fc2.weight = nn.Parameter(w1)
     yt = wh(xt)
+    y_all = []
     d_yn_dx = []
     d2_yn_dx2 = []
+    psy_t_all = []
     for xi in x_space:
-        #net_out = neural_network(W, xi)[0][0]
+        net_out = neural_network(W, xi)[0][0]
+        psy_t = psy_trial(xi, net_out)
+        psy_t_all.append(psy_t)
+        y_all.append(net_out)
 
         net_out_d = grad(neural_network_x)(xi)
         d_yn_dx.append(net_out_d)
@@ -27,6 +32,7 @@ if __name__ == "__main__":
         d2_yn_dx2.append(net_out_dd)
     d_yn_dx = np.array(d_yn_dx)
     d2_yn_dx2 = np.array(d2_yn_dx2)
+    psy_t_all = np.array(psy_t_all)
     from torch.autograd.functional import jacobian,hessian
 
     jac = jacobian(wh.forward,inputs=xt)
