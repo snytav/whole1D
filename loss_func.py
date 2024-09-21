@@ -40,11 +40,24 @@ if __name__ == "__main__":
 
     dy = np.max(np.abs(d_yn_dx - d_yt_dx.detach().numpy()))
 
+    psy_t_all_torch = psy_trial(xt,yt)
+
+    d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+
     hes = hessian(wh.one_point_forward, inputs=xt)
 
     d2_yt_dx2 = hes.diag()
 
     dh = np.max(np.abs(d2_yn_dx2-d2_yt_dx2.detach().numpy()))
+
+    f = lambda x: psy_trial(x[0], x[1])
+    xt = xt.reshape(3,1)
+    tt = torch.cat((xt, yt), 1)
+
+    psy_t_all_torch = f(tt.T)
+
+    d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+
 
     qq = 0
 
