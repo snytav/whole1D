@@ -7,6 +7,8 @@ import autograd.numpy as np
 from WholePoisNet import WholePoisNet,w,w1,xt
 from autograd import grad
 
+psy_grad = grad(psy_trial)
+psy_grad2 = grad(psy_grad)
 
 
 if __name__ == "__main__":
@@ -19,6 +21,7 @@ if __name__ == "__main__":
     d_yn_dx = []
     d2_yn_dx2 = []
     psy_t_all = []
+    psy_grad2_all = []
     for xi in x_space:
         net_out = neural_network(W, xi)[0][0]
         psy_t = psy_trial(xi, net_out)
@@ -30,9 +33,12 @@ if __name__ == "__main__":
 
         net_out_dd = grad(grad(neural_network_x))(xi)
         d2_yn_dx2.append(net_out_dd)
+        second_gradient_of_trial = psy_grad2(xi, net_out)
+        psy_grad2_all.append(second_gradient_of_trial)
     d_yn_dx = np.array(d_yn_dx)
     d2_yn_dx2 = np.array(d2_yn_dx2)
     psy_t_all = np.array(psy_t_all)
+    psy_grad2_all = np.array(psy_grad2_all)
     from torch.autograd.functional import jacobian,hessian
 
     jac = jacobian(wh.forward,inputs=xt)
@@ -42,7 +48,7 @@ if __name__ == "__main__":
 
     psy_t_all_torch = psy_trial(xt,yt)
 
-    d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+  #  d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
 
     hes = hessian(wh.one_point_forward, inputs=xt)
 
@@ -57,6 +63,8 @@ if __name__ == "__main__":
     psy_t_all_torch = f(tt.T)
 
     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+    one_point_psy_trial = lambda x:torch.sum(torch.abs(f(x)))
+    psy_grad2_all_torch = hessian(one_point_psy_trial, inputs=xt)
 
 
     qq = 0
