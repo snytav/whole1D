@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
 
+    # hessian is wrong !!!!!!
     hes = hessian(wh.one_point_forward, inputs=xt)
 
     d2_yt_dx2 = hes.diag()
