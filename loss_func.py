@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     psy_t_all_torch = psy_trial(xt,yt)
 
-    d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+    d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
 
     hes = hessian(wh.one_point_forward, inputs=xt)
 
