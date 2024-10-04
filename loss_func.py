@@ -1,11 +1,12 @@
 import torch
 import torch.nn as nn
-from torch.autograd.functional import jacobian,hessian
+from torch.autograd.functional import jacobian
 from deriv_example import neural_network_x,neural_network,nx,psy_trial
 from deriv_example import W,x_space,pn,sigmoid
 import autograd.numpy as np
 from WholePoisNet import WholePoisNet,w,w1,xt
 from autograd import grad
+from torch.func import hessian
 
 
 
@@ -33,7 +34,7 @@ if __name__ == "__main__":
     d_yn_dx = np.array(d_yn_dx)
     d2_yn_dx2 = np.array(d2_yn_dx2)
     psy_t_all = np.array(psy_t_all)
-    from torch.autograd.functional import jacobian,hessian
+    from torch.autograd.functional import jacobian
 
     jac = jacobian(wh.forward,inputs=xt)
     d_yt_dx = jac[:, 0, :].diag()
@@ -45,7 +46,7 @@ if __name__ == "__main__":
     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
 
     # hessian is wrong !!!!!!
-    hes = hessian(wh.one_point_forward, inputs=xt)
+    hes = hessian(wh.one_point_forward)(xt)
 
     d2_yt_dx2 = hes.diag()
 
