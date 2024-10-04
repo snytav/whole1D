@@ -19,6 +19,7 @@ if __name__ == "__main__":
     d_yn_dx = []
     d2_yn_dx2 = []
     psy_t_all = []
+    gradients_of_trial = []
     for xi in x_space:
         net_out = neural_network(W, xi)[0][0]
         psy_t = psy_trial(xi, net_out)
@@ -30,9 +31,13 @@ if __name__ == "__main__":
 
         net_out_dd = grad(grad(neural_network_x))(xi)
         d2_yn_dx2.append(net_out_dd)
+        from deriv_example import psy_grad
+        gradient_of_trial = psy_grad(xi, net_out)
+        gradients_of_trial.append(gradient_of_trial)
     d_yn_dx = np.array(d_yn_dx)
     d2_yn_dx2 = np.array(d2_yn_dx2)
     psy_t_all = np.array(psy_t_all)
+    gradients_of_trial = np.array(gradients_of_trial)
     from torch.autograd.functional import jacobian,hessian
 
     jac = jacobian(wh.forward,inputs=xt)
@@ -64,6 +69,12 @@ if __name__ == "__main__":
 
     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
 
+    gradients_of_trial_torch = jacobian(f,inputs=tt.T)
+    g = gradients_of_trial_torch
+    g0 = g[:,0,:]
+    gt = g0.diag()
+
+    d_grad = np.max(np.abs(gt.detach().numpy()-gradients_of_trial))
 
     qq = 0
 
