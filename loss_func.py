@@ -44,11 +44,16 @@ if __name__ == "__main__":
 
     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
 
-    # hessian is wrong !!!!!!
-    hes = hessian(wh.one_point_forward, inputs=xt)
+   
+    hes = torch.func.hessian(wh.forward)(xt)
 
-    d2_yt_dx2 = hes.diag()
 
+    # dimension of "hes" is (3,1,3,3), so reshaping it to eliminate 2nd dimension
+    h3 = hes.reshape(hes.shape[0], hes.shape[2], hes.shape[3])
+    # so called "diagonal" of 3rd rank tensor
+    qd = torch.diagonal(h3, 0)
+    # qd is a matrix, so this time te real diagonal
+    d2_yt_dx2 = qd.diag()
     dh = np.max(np.abs(d2_yn_dx2-d2_yt_dx2.detach().numpy()))
 
     f = lambda x: psy_trial(x[0], x[1])
