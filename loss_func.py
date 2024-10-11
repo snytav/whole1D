@@ -42,7 +42,7 @@ if __name__ == "__main__":
     d2_yn_dx2 = np.array(d2_yn_dx2)
     psy_t_all = np.array(psy_t_all)
     gradients_of_trial = np.array(gradients_of_trial)
-    second_gradient_of_trial = np.array(second_gradient_of_trial)
+    all_second_gradient_of_trial = np.array(all_second_gradient_of_trial)
 
     from torch.autograd.functional import jacobian,hessian
 
@@ -82,6 +82,7 @@ if __name__ == "__main__":
 
     d_grad = np.max(np.abs(gt.detach().numpy()-gradients_of_trial))
 
+    # only d_psy_dx2 found at h[0,0,0,0,0]
     grad2_of_trial_torch = torch.func.hessian(f)(tt.T)
 
 
