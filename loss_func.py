@@ -11,11 +11,15 @@ from autograd import grad
 
 
 def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
-    yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
 
-    wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
-    wh.fc2.weight = nn.Parameter(w1)
+    if wh.numpy_check:
+       yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
+
+       wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
+       wh.fc2.weight = nn.Parameter(w1)
+
     yt = wh(xt)
+    
     y_all = []
     d_yn_dx = []
     d2_yn_dx2 = []
@@ -120,6 +124,6 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
 
 
 if __name__ == "__main__":
-    wh = WholePoisNet(nx)
+    wh = WholePoisNet(nx,True)
     y = loss_numpy_torch(W, x_space, nx, w1, xt,wh)
     qq = 0

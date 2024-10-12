@@ -160,8 +160,9 @@ for xi in x_space:
 net_out_s = np.array(net_out_s)
 
 class WholePoisNet(nn.Module):
-    def __init__(self,nx):
+    def __init__(self,nx,numpy_check):
         super(WholePoisNet,self).__init__()
+        self.numpy_check = numpy_check
         self.nx = nx
         fc1 = Multiply(1,self.nx)
         self.fc1 = fc1
