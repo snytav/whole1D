@@ -9,9 +9,10 @@ from autograd import grad
 
 
 
-if __name__ == "__main__":
+
+def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
     yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
-    wh = WholePoisNet(nx)
+
     wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
     wh.fc2.weight = nn.Parameter(w1)
     yt = wh(xt)
@@ -111,10 +112,14 @@ if __name__ == "__main__":
     # now we must be ready to evaluate loss function
     err_sqr_torch = torch.pow(func_torch.diag()-h_2D_diag,2.0)
     d_err_sqr = np.max(np.abs(err_sqr_torch.detach().numpy()-err_sqr_all))
-    qq = 0
+    return torch.sum(err_sqr_torch)
 
 
 
 
 
+
+if __name__ == "__main__":
+    wh = WholePoisNet(nx)
+    y = loss_numpy_torch(W, x_space, nx, w1, xt,wh)
     qq = 0
