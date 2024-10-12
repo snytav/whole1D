@@ -22,6 +22,7 @@ if __name__ == "__main__":
     gradients_of_trial = []
     all_second_gradient_of_trial = []
     func_all = []
+    err_sqr_all = []
     for xi in x_space:
         net_out = neural_network(W, xi)[0][0]
         psy_t = psy_trial(xi, net_out)
@@ -41,6 +42,8 @@ if __name__ == "__main__":
         all_second_gradient_of_trial.append(second_gradient_of_trial)
         func = f(xi, psy_t, gradient_of_trial)  # right part function
         func_all.append(func)
+        err_sqr = (second_gradient_of_trial - func) ** 2
+        err_sqr_all.append(err_sqr)
 
     d_yn_dx = np.array(d_yn_dx)
     d2_yn_dx2 = np.array(d2_yn_dx2)
@@ -48,6 +51,7 @@ if __name__ == "__main__":
     gradients_of_trial = np.array(gradients_of_trial)
     all_second_gradient_of_trial = np.array(all_second_gradient_of_trial)
     func_all = np.array(func_all)
+    err_sqr_all = np.array(err_sqr_all)
 
     from torch.autograd.functional import jacobian,hessian
 
@@ -105,6 +109,8 @@ if __name__ == "__main__":
 
 
     # now we must be ready to evaluate loss function
+    err_sqr_torch = torch.pow(func_torch.diag()-h_2D_diag,2.0)
+    d_err_sqr = np.max(np.abs(err_sqr_torch.detach().numpy()-err_sqr_all))
     qq = 0
 
 
