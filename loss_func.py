@@ -83,7 +83,16 @@ if __name__ == "__main__":
     d_grad = np.max(np.abs(gt.detach().numpy()-gradients_of_trial))
 
     # only d_psy_dx2 found at h[0,0,0,0,0]
-    grad2_of_trial_torch = torch.func.hessian(f)(tt.T)
+    h = torch.func.hessian(f)(tt.T)
+    # grad2_of_trial_torch
+    # with psy-function defined here: y = lambda x :x + x**2*yt
+    # all OK !!!
+    #redefining psy_trial
+    psy = lambda x: x + x ** 2 * yt
+    h_psy = torch.func.hessian(psy)(xt)
+    hh = h_psy.reshape(h_psy.shape[0], h_psy.shape[2], h_psy.shape[4])
+    h_2D_diag = torch.einsum('iii->i', hh)
+    d_psy_hesssian = np.max(np.abs(h_2D_diag.detach().numpy()-all_second_gradient_of_trial))
 
 
     qq = 0
