@@ -136,5 +136,6 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
 
 if __name__ == "__main__":
     wh = WholePoisNet(nx,True)
+    #xt = xt.reshape(xt.shape[0],1).float()
     y,err = loss_numpy_torch(W, x_space, nx, w1, xt,wh)
     qq = 0
