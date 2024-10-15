@@ -8,15 +8,19 @@ from WholePoisNet import WholePoisNet,w,w1,xt
 from autograd import grad
 
 
+def get_yn_set_weights(wh,x_space):
+    if wh.numpy_check:
+        yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
 
+        wh.fc1.set_weight(w)  # weight = nn.Parameter(w3.T)
+        wh.fc2.weight = nn.Parameter(w1)
+        return yn,wh
+    else:
+        return np.zeros_like(x_space),wh
 
 def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
 
-    if wh.numpy_check:
-       yn = np.array([neural_network(W, xi)[0][0] for xi in x_space])
-
-       wh.fc1.set_weight(w)   #weight = nn.Parameter(w3.T)
-       wh.fc2.weight = nn.Parameter(w1)
+    yn,wh = get_yn_set_weights(wh,x_space)
 
     yt = wh(xt)
 
