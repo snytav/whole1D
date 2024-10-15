@@ -81,13 +81,13 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
     jac = jacobian(wh.forward,inputs=xt)
     d_yt_dx = jac[:, 0, :].diag()
 
-    if wh.numpy_check:
-        dy = np.max(np.abs(d_yn_dx - d_yt_dx.detach().numpy()))
+    # if wh.numpy_check:
+    #     dy = np.max(np.abs(d_yn_dx - d_yt_dx.detach().numpy()))
 
     psy_t_all_torch = psy_trial(xt,yt)
 
-    if wh.numpy_check:
-        d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
+    # if wh.numpy_check:
+    #     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.diag().detach().numpy()))
 
    
     hes = torch.func.hessian(wh.forward)(xt)
@@ -107,16 +107,16 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
 
     psy_t_all_torch = f1(tt.T)
 
-    if wh.numpy_check:
-        d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
+    # if wh.numpy_check:
+    #     d_psy_t = np.max(np.abs(psy_t_all - psy_t_all_torch.detach().numpy()))
 
     gradients_of_trial_torch = jacobian(f1,inputs=tt.T)
     g = gradients_of_trial_torch
     g0 = g[:,0,:]
     gt = g0.diag()
 
-    if wh.numpy_check:
-        d_grad = np.max(np.abs(gt.detach().numpy()-gradients_of_trial))
+    # if wh.numpy_check:
+    #     d_grad = np.max(np.abs(gt.detach().numpy()-gradients_of_trial))
 
     # only d_psy_dx2 found at h[0,0,0,0,0]
     h = torch.func.hessian(f1)(tt.T)
@@ -134,8 +134,8 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
     from deriv_example import f
     func_torch = f(xt, psy(xt), gt)
 
-    if wh.numpy_check:
-        d_func = np.max(np.abs(func_all-func_torch.diag().detach().numpy()))
+    # if wh.numpy_check:
+    #     d_func = np.max(np.abs(func_all-func_torch.diag().detach().numpy()))
 
 
     # now we must be ready to evaluate loss function
