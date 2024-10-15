@@ -16,14 +16,9 @@ def get_yn_set_weights(wh,x_space):
         wh.fc2.weight = nn.Parameter(w1)
         return yn,wh
     else:
-        return np.zeros_like(x_space),wh
+        return np.zeros_like(x_space),
 
-def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
-
-    yn,wh = get_yn_set_weights(wh,x_space)
-
-    yt = wh(xt)
-
+def numpy_loss_details(wh,x_space,W):
     if wh.numpy_check:
         y_all = []
         d_yn_dx = []
@@ -63,6 +58,23 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
         all_second_gradient_of_trial = np.array(all_second_gradient_of_trial)
         func_all = np.array(func_all)
         err_sqr_all = np.array(err_sqr_all)
+               # 1      2         3           4
+        return d_yn_dx,d2_yn_dx2,psy_t_all,gradients_of_trial,\
+               all_second_gradient_of_trial,func_all,err_sqr_all
+    else:
+        N = x_space.shape[0]
+        return np.zeros(N),np.zeros(N),np.zeros(N),np.zeros(N),np.zeros(N), \
+               np.zeros(N),np.zeros(N),np.zeros(N)
+
+def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
+
+    yn,wh = get_yn_set_weights(wh,x_space)
+
+    yt = wh(xt)
+
+    d_yn_dx, d2_yn_dx2, psy_t_all, gradients_of_trial, \
+    all_second_gradient_of_trial, func_all, err_sqr_all = numpy_loss_details(wh,x_space,W)
+
 
     from torch.autograd.functional import jacobian,hessian
 
@@ -119,6 +131,7 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
     d_psy_hesssian = np.max(np.abs(h_2D_diag.detach().numpy()-all_second_gradient_of_trial))
 
     # Right-hand-side
+    from deriv_example import f
     func_torch = f(xt, psy(xt), gt)
 
     if wh.numpy_check:
