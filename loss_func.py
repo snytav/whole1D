@@ -81,9 +81,6 @@ def loss_numpy_torch(W,x_space,nx,w1,xt,wh):
     jac = jacobian(wh.forward,inputs=xt)
     d_yt_dx = jac[:, 0, :].diag()
 
-    # if wh.numpy_check:
-    #     dy = np.max(np.abs(d_yn_dx - d_yt_dx.detach().numpy()))
-
     psy_t_all_torch = psy_trial(xt,yt)
 
     # if wh.numpy_check:
