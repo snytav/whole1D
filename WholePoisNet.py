@@ -31,13 +31,13 @@ class Multiply(nn.Module):
         self.weight = torch.nn.Parameter(torch.rand(self.N,self.M))
 
     def set_weight(self,w):
-        wn = w.repeat(self.M,1)
-        self.weight = nn.Parameter(wn.T)
+
+        self.weight = nn.Parameter(w)
         return
 
     def forward(self, x):
-
-        x = torch.multiply(self.weight,x).T
+        wn = self.weight.repeat(self.M, 1).T
+        x = torch.multiply(wn,x).T
         return x
 
 ml = Multiply(nx,nx)
@@ -87,8 +87,8 @@ y1_t_2,torch.sigmoid(y1_t_2),w1
 y2_n_2 = np.dot(sigmoid(y1_n_2),W[1])
 y2_n_2
 
-y2_t_2 = torch.inner(torch.sigmoid(y1_t_2),w1)
-y2_t_2
+# y2_t_2 = torch.inner(torch.sigmoid(y1_t_2),w1)
+# y2_t_2
 
 # d_y2_2 = np.abs(y2_n_2 - y2_t_2.detach().numpy())
 # d_y2_2
@@ -100,9 +100,9 @@ w1 = torch.from_numpy(W[1])
 y1_t[0,:],w1.T
 
 #y2_t_2 = torch.inner(y1_t[0,:],w1.reshape(3))
-y2_t_2
+# y2_t_2
 
-y2_t_2
+# y2_t_2
 
 # 2nd layer input
 layer2_input = np.array([sigmoid(yi) for yi in y1_n])
